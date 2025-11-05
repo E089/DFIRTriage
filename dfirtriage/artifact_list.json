@@ -1,0 +1,52 @@
+[
+    {
+        "name": "running_processes",
+        "description": "List of all running processes with full arguments.",
+        "command": "ps auxwww"
+    },
+    {
+        "name": "active_network_connections",
+        "description": "Lists all listening ports and active network connections.",
+        "command": "ss -tulpn"
+    },
+    {
+        "name": "open_files",
+        "description": "Lists all files currently held open by processes.",
+        "command": "lsof"
+    },
+    {
+        "name": "logged_in_users",
+        "description": "Shows who is currently logged into the system.",
+        "command": "w"
+    },
+    {
+        "name": "bash_history",
+        "description": "Collects command history for all users.",
+        "command": "cat /home/*/.bash_history /root/.bash_history"
+    },
+    {
+        "name": "authentication_logs",
+        "description": "Collects logs for logins and authentication attempts.",
+        "command": "cat /var/log/auth.log /var/log/secure"
+    },
+    {
+        "name": "system_logs",
+        "description": "Collects general system activity logs.",
+        "command": "cat /var/log/syslog"
+    },
+    {
+        "name": "cron_jobs",
+        "description": "Collects all scheduled tasks for persistence.",
+        "command": "find /etc/cron* -type f -exec cat {} \\; && find /var/spool/cron* -type f -exec cat {} \\;"
+    },
+    {
+        "name": "system_configuration",
+        "description": "Dumps current kernel parameters.",
+        "command": "sysctl -a"
+    },
+    {
+        "name": "temp_directories",
+        "description": "Lists contents of common staging directories for malware.",
+        "command": "ls -al /tmp /var/tmp"
+    }
+]
