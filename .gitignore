@@ -1,0 +1,21 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Virtual Environments ---
+venv/
+env/
+*.env
+
+# --- IDE / Editor Settings ---
+.vscode/
+.idea/
+
+# --- Collected Data (CRITICAL) ---
+# Never commit evidence or tool output!
+*.zip
+*.tar.gz
+*.log
+triage_output/
