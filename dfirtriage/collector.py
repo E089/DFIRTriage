@@ -2,7 +2,7 @@ import os
 import json
 import socket
 import datetime
-import shutil  # NEW! Import the shutil library for zipping
+import shutil 
 
 # Import our custom function from utils.py
 from .utils import run_command
@@ -32,7 +32,7 @@ def setup_output_directory():
         
         print(f"[+] Output directory created at: {output_path}")
         
-        # NEW! Return both paths
+        # Return both paths
         return output_path, base_output_path, unique_folder_name
 
     except Exception as e:
@@ -40,14 +40,14 @@ def setup_output_directory():
         print(f"[!] {e}")
         return None, None, None
 
-# NEW! Create a new function for compression
+# Create a new function for compression
 def package_collection(output_dir, base_output_path, unique_folder_name):
     """
     Compresses the collected artifacts into a .tar.gz archive.
     """
     print(f"\n[*] Compressing artifacts...")
     try:
-        # Define the name for the archive (e.g., "erica-laptop_20251107_110030")
+        # Define the name for the archive (e.g., "name-laptop_20251107_110030")
         archive_name = os.path.join(base_output_path, unique_folder_name)
         
         # Create the .tar.gz archive
