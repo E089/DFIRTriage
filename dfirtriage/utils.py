@@ -14,28 +14,22 @@ def run_command(cmd_string):
                stderr (str): The standard error of the command, or None if successful.
     """
     try:
-        # We use shell=True to correctly handle shell features
-        # like wildcards (*), pipes (|), and environment variables.
-        # This is VITAL for commands like 'cat /home/*/.*history'
+    
         result = subprocess.run(
             cmd_string,
             shell=True,
             capture_output=True,
             text=True,
-            timeout=30  # Don't let a command hang for more than 30s
+            timeout=30  
         )
 
-        # Check if the command itself ran but reported an error
-        # (e.g., 'cat /file/that/does/not/exist')
         if result.returncode != 0:
             return None, result.stderr.strip()
 
-        # Success!
         return result.stdout.strip(), None
 
     except subprocess.TimeoutExpired:
         return None, f"Error: Command '{cmd_string}' timed out after 30 seconds."
     
     except Exception as e:
-        # Handle other Python-level errors (e.g., command not found)
         return None, f"Error executing command: {e}"

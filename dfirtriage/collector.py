@@ -4,10 +4,8 @@ import socket
 import datetime
 import shutil 
 
-# Import our custom function from utils.py
 from .utils import run_command
 
-# Define constants
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ARTIFACT_LIST_PATH = os.path.join(BASE_DIR, "artifact_list.json")
 OUTPUT_DIR_NAME = "triage_output"
@@ -22,17 +20,14 @@ def setup_output_directory():
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         unique_folder_name = f"{hostname}_{timestamp}"
         
-        # We need the base 'triage_output' directory path
         base_output_path = os.path.join(os.getcwd(), OUTPUT_DIR_NAME)
         
-        # And the full path to the unique collection folder
         output_path = os.path.join(base_output_path, unique_folder_name)
         
         os.makedirs(output_path, exist_ok=True)
         
         print(f"[+] Output directory created at: {output_path}")
         
-        # Return both paths
         return output_path, base_output_path, unique_folder_name
 
     except Exception as e:
@@ -40,28 +35,18 @@ def setup_output_directory():
         print(f"[!] {e}")
         return None, None, None
 
-# Create a new function for compression
 def package_collection(output_dir, base_output_path, unique_folder_name):
     """
     Compresses the collected artifacts into a .tar.gz archive.
     """
     print(f"\n[*] Compressing artifacts...")
     try:
-        # Define the name for the archive (e.g., "name-laptop_20251107_110030")
         archive_name = os.path.join(base_output_path, unique_folder_name)
-        
-        # Create the .tar.gz archive
-        # 'make_archive' is powerful:
-        # 1st arg: The desired output name (e.g., /triage_output/hostname_time)
-        # 2nd arg: The format ('gztar' is .tar.gz)
-        # 3rd arg: The folder to zip up (our 'output_dir')
         shutil.make_archive(
             base_name=archive_name,
             format='gztar',
             root_dir=output_dir
         )
-        
-        # NEW! Clean up the raw files folder after zipping
         shutil.rmtree(output_dir)
         
         print(f"[+] Success! Collection compressed to: {archive_name}.tar.gz")
@@ -76,13 +61,10 @@ def main():
     """
     print("--- Starting DFIRTriage Collector ---")
     
-    # 1. Set up the output folder
-    # NEW! Get all three path variables
     output_dir, base_output_path, unique_folder_name = setup_output_directory()
     if not output_dir:
-        return # Stop if we couldn't create the folder
+        return 
         
-    # 2. Load the artifact list
     try:
         with open(ARTIFACT_LIST_PATH, 'r') as f:
             artifacts = json.load(f)
@@ -93,7 +75,6 @@ def main():
 
     print(f"[+] Successfully loaded {len(artifacts)} artifacts from JSON.")
 
-    # 3. Main Collection Loop
     for artifact in artifacts:
         name = artifact.get("name", "unknown_artifact")
         command = artifact.get("command")
@@ -123,7 +104,6 @@ def main():
 
     print("--- Collection Complete! ---")
     
-    # 4. NEW! Call the packaging function at the end
     package_collection(output_dir, base_output_path, unique_folder_name)
 
 
